@@ -27,19 +27,9 @@ export class HomeComponent implements OnInit {
       distance: [ , Validators.required],
       category: [ , Validators.required],
       location: ['', Validators.required],
-      autoLocation: [ , Validators.required]
     });
 
     this.onChanges();
-    this.checkboxOnChange();
-  }
-
-  checkboxOnChange() {
-    this.searchForm.get('autoLocation').valueChanges.subscribe((value: any) => {
-      console.log("autoLocation: ", value);
-      this.searchForm.controls['location'].reset();
-      this.searchForm.controls['location'].disable();
-    })
   }
 
   onChanges(): void {
@@ -59,7 +49,6 @@ export class HomeComponent implements OnInit {
 
       }, error => {
         console.log("error in autocomplete: ", error);
-
       })
     });
   }
@@ -69,60 +58,21 @@ export class HomeComponent implements OnInit {
     
     var data = this.searchForm.value;
 
-    if (!data.autoLocation) {
-      this.service.getBusinesses(data).subscribe((response: any) => {
-        // console.log("Response from API getBusinesses: ", response);
-
-        if (response.businesses.length>0) {
-          this.businesses = response.businesses;
-          this.businesses.forEach(element => {
-            element.distance = Math.round(element.distance * 0.000621371192);
-          });
-        } else {
-          this.noResult = true;
-        }
-
-        console.log("businesses: ", this.businesses);
-
-      }, (error: any) => {
-        console.log('Error is: ', error);
-
-      })
-    } else {
-      if ('geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          var latitude = position.coords.latitude;
-          var longitude = position.coords.longitude;
-
-          console.log("latitude: ", latitude);
-          console.log("longitude: ", longitude);
-
-          var obj = {
-            category: data.category, distance: data.distance, keyword: data.keyword, latitude: latitude, longitude: longitude
-          }
-
-          this.service.getBusinessesByCurrenLocation(obj).subscribe((response: any) => {
-            console.log("BusinessesByCurrenLocation: ", response);
-            if (response.businesses.length>0) {
-              this.businesses = response.businesses;
-              this.businesses.forEach(element => {
-                element.distance = Math.round(element.distance * 0.000621371192);
-              });
-            } else {
-              this.noResult = true;
-            }
-    
-            console.log("businesses: ", this.businesses);
-    
-          }, (error: any) => {
-            console.log('Error is: ', error);
-            
-          })
-          
+    this.service.getBusinesses(data).subscribe((response: any) => {
+      if (response.businesses.length>0) {
+        this.businesses = response.businesses;
+        this.businesses.forEach(element => {
+          element.distance = Math.round(element.distance * 0.000621371192);
         });
+      } else {
+        this.noResult = true;
       }
-    }
 
+      console.log("businesses: ", this.businesses);
+
+    }, (error: any) => {
+      console.log('Error is: ', error);
+    });
   }
 
   clear() {
@@ -131,7 +81,4 @@ export class HomeComponent implements OnInit {
     this.searchForm.reset();
     this.searchForm.controls['location'].enable();
   }
-
-
-
 }
