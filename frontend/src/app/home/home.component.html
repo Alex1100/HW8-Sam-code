@@ -1,0 +1,130 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title>Business search</mat-card-title>
+    <form id="form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="keyword">Keyword*</label>
+        <input
+          type="text"
+          class="form-control"
+          id="keyword"
+          formControlName="keyword"
+          matInput
+          [matAutocomplete]="auto"
+          required
+        />
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let item of filteredOptions"
+            [value]="item"
+            style="background-color: white; color: black"
+          >
+            {{ item }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="distance">Distance</label>
+          <input
+            type="number"
+            class="form-control"
+            id="distance"
+            formControlName="distance"
+            placeholder="10"
+          />
+        </div>
+        <div class="form-group col-md-5">
+          <label for="category">Category *</label>
+          <select
+            id="category"
+            class="form-control"
+            formControlName="category"
+            required
+          >
+            <!-- <option selected>Choose...</option> -->
+            <option selected value="all">Default</option>
+            <option value="Arts & Entertainment">Arts & Entertainment</option>
+            <option value="Health & Medical">Health & Medical</option>
+            <option value="Hotels & Travel">Hotels & Travel</option>
+            <option value="Food">Food</option>
+            <option value="Professional Services">Professional Services</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="location">Location *</label>
+        <input
+          type="text"
+          class="form-control"
+          id="location"
+          formControlName="location"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="autoLocation"
+            formControlName="autoLocation"
+          />
+          <label
+            class="form-check-label"
+            for="autoLocation"
+            style="margin: 2.5px"
+          >
+            Auto detect my location
+          </label>
+        </div>
+      </div>
+      <mat-card-actions align="end">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-danger" (click)="clear()">
+          Clear
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>
+
+<mat-card
+  *ngIf="noResult"
+  style="text-align: center; max-width: 300px; border-radius: 10px"
+>
+  <strong style="color: red">No results available</strong>
+</mat-card>
+
+<mat-card *ngIf="businesses.length > 0">
+  <table class="table" id="myTable">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Image</th>
+        <th scope="col">Business Name</th>
+        <th scope="col">Rating</th>
+        <th scope="col">Distance (miles)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        class="clickable"
+        *ngFor="let elem of businesses; let i = index"
+        [routerLink]="['display', elem.id]"
+      >
+        <td *ngIf="i < 10">{{ i + 1 }}</td>
+        <th scope="row" *ngIf="i < 10">
+          <img
+            src="{{ elem.image_url }}"
+            alt="no image"
+            style="width: 11rem; height: 11rem"
+          />
+        </th>
+        <td *ngIf="i < 10">{{ elem.name }}</td>
+        <td *ngIf="i < 10">{{ elem.rating }}</td>
+        <td *ngIf="i < 10">{{ elem.distance }}</td>
+      </tr>
+    </tbody>
+  </table>
+</mat-card>

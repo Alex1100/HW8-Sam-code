@@ -1,0 +1,12 @@
+nav {
+  padding: 1rem;
+}
+
+nav div button {
+  margin: 0.2rem;
+  min-width: 7rem;
+  color: black;
+}
+.btn {
+  color: black;
+}

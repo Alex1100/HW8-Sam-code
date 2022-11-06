@@ -1,0 +1,29 @@
+nav button{
+    margin: 1rem;
+    min-width: 7rem;
+}
+
+mat-tab-group{
+    background-color: #ffcf87;;
+    color: black;
+}
+
+
+.example-card{
+    color: black;
+    background-color: white;
+}
+
+.mat-grid-list, .reserve, .slide, .share{
+    background-color: white;
+}
+
+ng-image-slider{
+    text-align: -webkit-center;
+    background-color: white;
+}
+
+agm-map {
+    height: 600px;
+  }
+

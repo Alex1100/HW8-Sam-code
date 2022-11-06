@@ -1,0 +1,30 @@
+<div class="container">
+  <mat-card *ngIf="noResult" style="text-align: center; max-width: 300px; border-radius: 10px;">
+    <strong style="color: red;">No reservations available</strong>
+  </mat-card>
+
+  <mat-card *ngIf="bookings.length > 0">
+    <table class="table" id="myTable">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Business Name</th>
+          <th scope="col">Date</th>
+          <th scope="col">Time</th>
+          <th scope="col">Email</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="clickable" *ngFor="let elem of bookings; let i = index">
+          <td>{{i+1}}</td>
+          <td>{{elem.name || 'Ali'}}</td>
+          <td>{{elem.date || 5}}</td>
+          <td>{{elem.time || 3}}</td>
+          <td>{{elem.email || 'ali.com'}}</td>
+          <td><button class="mat-raised-button mat-warn" (click)="delete(elem)">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card>
+</div>

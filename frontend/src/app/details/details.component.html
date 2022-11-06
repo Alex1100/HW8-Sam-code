@@ -1,0 +1,102 @@
+<div class="container" style="background-color: white; text-align: center;">
+    <nav class="navbar navbar-light bg-light">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="button" (click)="backHome()">Back</button>
+    </nav>
+    <br>
+    <br>
+    <h1>{{business.name}}</h1>
+    <mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4" color="primary">
+        <mat-tab label="Business details">
+            <mat-grid-list cols="2" rowHeight="100px">
+                <mat-grid-tile>
+                    <mat-card class="example-card">
+                        <mat-card-title>Address</mat-card-title>
+                        <mat-card-content>
+                            <p>{{business?.location?.display_address[0]}} {{ business?.location?.display_address[1]}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-card class="example-card">
+                        <mat-card-title>Category</mat-card-title>
+                        <mat-card-content>
+                            <p>{{business.categories[0]?.alias}} {{business.categories[1]?.alias}}
+                                {{business.categories[2]?.alias}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-card class="example-card">
+                        <mat-card-title>Phone</mat-card-title>
+                        <mat-card-content>
+                            <p>{{business.display_phone}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-card class="example-card">
+                        <mat-card-title>Price range</mat-card-title>
+                        <mat-card-content>
+                            <p>{{business.price}}</p>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-card class="example-card">
+                        <mat-card-title>Status</mat-card-title>
+                        <mat-card-content>
+                            <p>
+                                <button class="btn btn-warn" *ngIf="isClosed">Closed now</button>
+                                <button class="btn btn-success" *ngIf="!isClosed">Opened now</button>
+                            </p>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-card class="example-card">
+                        <mat-card-title>Visit yelp for more</mat-card-title>
+                        <mat-card-content>
+                            <a href="{{business.url}}" target="_blank">Business link</a>
+                        </mat-card-content>
+                    </mat-card>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <div class="reserve" style="padding: 1rem;">
+                <button class="btn btn-danger" type="button" (click)="openDialog()">Reserve Now</button>
+            </div>
+            <div class="share" style="padding: 0.5rem;">
+                <label>Share on: </label>
+                <a style="margin-left: 1rem;"  type="button" href="https://www.facebook.com/sharer/sharer.php?u={{business.url}}" target="_blank">Facebook</a>
+                <a style="margin-left: 1rem;" type="button" href="https://twitter.com/intent/tweet?url={{business.url}}" target="_blank">Twitter</a>
+            </div>
+            <div class="slide" style="padding: 1rem;">
+                <ng-image-slider [images]="imageObject" #nav></ng-image-slider>
+            </div>
+        </mat-tab>
+        <mat-tab label="Map location">
+            <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+            </agm-map>
+        </mat-tab>
+        <mat-tab label="Reviews">
+            <mat-card class="example-card" *ngFor="let elem of reviews; let i = index" 
+                                           style="text-align: left; 
+                                                  padding-left: 5rem; 
+                                                  border-radius: 10px;
+                                                  margin-bottom: 0.5rem;
+                                                  margin-left: 0.5rem;
+                                                  margin-right: 0.5rem;
+                                                  margin-top: 0.5rem;
+                                                  border: 1px solid;">
+                <mat-card-title>{{elem.user.name}}</mat-card-title>
+                <mat-card-content>
+                    <p>Rating: {{elem.rating}}/5</p>
+                    <p>{{elem.text}}</p>
+                    <p>{{elem.time_created}}</p>
+                </mat-card-content>
+                <mat-divider inset></mat-divider>
+            </mat-card>
+            
+        </mat-tab>
+    </mat-tab-group>
+</div>
